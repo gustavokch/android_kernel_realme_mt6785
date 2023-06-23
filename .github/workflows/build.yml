@@ -25,8 +25,8 @@ jobs:
         NAME: Dark-Ages-Último
       with:
         arch: arm64
-        compiler: clang/15
-        defconfig: config
+        compiler: clang/14
+        defconfig: defconfig
         image: Image.gz-dtb
 
     - name: Release build
