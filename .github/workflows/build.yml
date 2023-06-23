@@ -26,7 +26,7 @@ jobs:
       with:
         arch: arm64
         compiler: clang/15
-        defconfig: build.config.mtk.aarch64
+        defconfig: config
         image: Image.gz-dtb
 
     - name: Release build
