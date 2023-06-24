@@ -36,13 +36,14 @@ jobs:
       with:
         allowUpdates: true
         tag: 4.14.319-KernelSU
-        artifacts: "*.tar.gz,*.zip,*.gz-dtb"
+        artifacts: /github/workspace/zipper/android_kernel_realme_mt6785*
         token: ${{ secrets.GITHUB_TOKEN }}
         
   
     - name: Artifacts
       uses: ncipollo/release-action@v1
       with:
+        allowUpdates: true
         tag: 4.14.319-KernelSU
         artifacts: ${{ steps.build.outputs.outfile }}
         token: ${{ secrets.GITHUB_TOKEN }}
