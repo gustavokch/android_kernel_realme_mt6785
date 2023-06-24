@@ -24,8 +24,6 @@ jobs:
     - name: Android kernel build
       uses: lemniskett/android-kernel-actions@master
       id: build
-      env:
-        NAME: LOS20-KernelSU
       with:
         arch: arm64
         compiler: clang/14
@@ -38,5 +36,12 @@ jobs:
       with:
         allowUpdates: true
         tag: 4.14.319-KernelSU
+        artifacts: artifacts:"*.tar.gz,*.zip,*.gz-dtb"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+  
+    - name: Artifacts
+      uses: ncipollo/release-action@v1
+      with:
         artifacts: ${{ steps.build.outputs.outfile }}
         token: ${{ secrets.GITHUB_TOKEN }}
