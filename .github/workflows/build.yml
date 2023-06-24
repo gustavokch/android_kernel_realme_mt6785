@@ -24,7 +24,7 @@ jobs:
       env:
         NAME: Dark-Ages-Último
       with:
-        arch: arm64c
+        arch: arm64
         compiler: aosp-clang/master/clang-r487747c
         defconfig: RM6785_defconfig
         image: Image.gz-dtb
