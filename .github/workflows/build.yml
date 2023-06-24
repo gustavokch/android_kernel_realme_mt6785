@@ -2,7 +2,7 @@ name: Build on Tag
 
 on:
   push:
-   branches:
+   tags:
     - '*'
 
 jobs:
