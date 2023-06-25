@@ -48,10 +48,11 @@ jobs:
         export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         sudo find ./out -type f -name "*.zip" > deb
         export DEB=$(cat deb)
+        echo $DEB
         echo $RELEASE
         echo $RELEASE_TITLE
         echo $RELEASE_NAME
-        gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
+        gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/android_kernel_realme_mt6785 $RELEASE $DEB
   
     - name: Artifacts
       env:
