@@ -30,26 +30,30 @@ jobs:
         defconfig: RM6785_defconfig
         image: Image.gz-dtb
 
-    - name: Install gh cli
+    - name: Install GH CLI
+      uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
+      with:
+        gh-cli-version: 2.14.2 # optional, see action.yml for current default
+      
+    - name: Release build
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-        && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-        && sudo apt update \
-        && sudo apt install gh -y
-	sudo apt install debhelper zip -y
-
-    - name: Release
-       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
-       run: |
-	 find / -type f -name "*.zip" > deb
-         export DEB=$(cat deb)
-         zip ../$RELEASE_NAME.zip -@ < deb
-         echo $RELEASE
-         echo $RELEASE_TITLE
-         echo $RELEASE_NAME
-         gh release create --title $(($RELEASE_START+$TAG+$GITHUB_RUN_NUMBER)) --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
+        git config --global --add safe.directory "/__w/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
+        export RELEASE=$(($RELEASE_START+$GITHUB_RUN_NUMBER))
+        export RELEASE_NAME="4.14.319-KernelSU"
+        export RELEASE_TITLE="4.14.319-KernelSU"
+        export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+        find / -type f -name "*.zip" > deb
+        export DEB=$(cat deb)
+        echo $RELEASE
+        echo $RELEASE_TITLE
+        echo $RELEASE_NAME
+        gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
+  
+    - name: Artifacts
+      uses: ncipollo/release-action@v1
+      with:
+        tag: 4.14.319-KernelSU-release
+        artifacts: ${{ steps.build.outputs.outfile }}
+        token: ${{ secrets.GITHUB_TOKEN }}
