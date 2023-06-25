@@ -40,7 +40,7 @@ jobs:
         GITHUB_TOKEN: ${{secrets.TOKEN}}    
       run: |
         pwd
-        ls -la .
+        ls -la ./out
         git config --global --add safe.directory "/home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
         export RELEASE_NAME="4.14.319-KernelSU"
         export RELEASE_TITLE="4.14.319-KernelSU"
