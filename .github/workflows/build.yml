@@ -44,7 +44,7 @@ jobs:
         export RELEASE_NAME="4.14.319-KernelSU"
         export RELEASE_TITLE="4.14.319-KernelSU"
         export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-        find / -type f -name "*.zip" > deb
+        sudo find /__w -type f -name "*.zip" > deb
         export DEB=$(cat deb)
         echo $RELEASE
         echo $RELEASE_TITLE
