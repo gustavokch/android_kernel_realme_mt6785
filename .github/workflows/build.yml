@@ -31,7 +31,6 @@ jobs:
         image: Image.gz-dtb
 
     - name: Release build
-      
       env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
       run: |
@@ -43,9 +42,8 @@ jobs:
         && sudo apt install gh -y
         sudo apt install debhelper zip -y
         git config --global --add safe.directory "/__w//android_kernel_realme_mt6785/android_kernel_realme_mt6785"
-	      export TAG="KernelSU"
+	export TAG="KernelSU"
 
-	      export NAME=$(($RELEASE_START+$TAG))
         export RELEASE_NAME=$(($RELEASE_START+$TAG))
         export RELEASE_TITLE=$(($RELEASE_START+$TAG+$GITHUB_RUN_NUMBER))
         export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
