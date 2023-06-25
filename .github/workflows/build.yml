@@ -32,30 +32,27 @@ jobs:
 
     - name: Release build
       
-      uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        tag: 4.14.319-KernelSU
-        artifacts: /github/workspace/zipper/android_kernel_realme_mt6785*
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
-  
-    - name: Artifacts
-      uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        tag: 4.14.319-KernelSU
-        artifacts: ${{ steps.build.outputs.outfile }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+      run: |
+        type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+        && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+        && sudo apt update \
+        && sudo apt install gh -y
+        sudo apt install debhelper zip -y
+        git config --global --add safe.directory "/__w//android_kernel_realme_mt6785/android_kernel_realme_mt6785"
+	      export TAG="KernelSU"
 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.2
-      with:
-       name: release.zip
-    # A file, directory or wildcard pattern that describes what to upload
-       path: |
-        ${{ github.workspace }}/*.zip
-        ${{ github.workspace }}/*.gz-dtb
-        ${{ github.workspace }}/Image*
-        if-no-files-found:
-         warn: Output a warning but do not fail the action
+	      export NAME=$(($RELEASE_START+$TAG))
+        export RELEASE_NAME=$(($RELEASE_START+$TAG))
+        export RELEASE_TITLE=$(($RELEASE_START+$TAG+$GITHUB_RUN_NUMBER))
+        export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+        find / -type f -name "*.zip" > deb
+        export DEB=$(cat deb)
+        zip ../$RELEASE_NAME.zip -@ < deb
+        echo $RELEASE
+        echo $RELEASE_TITLE
+        echo $RELEASE_NAME
+        gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
