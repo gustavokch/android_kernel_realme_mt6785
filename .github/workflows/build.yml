@@ -37,11 +37,11 @@ jobs:
       
     - name: Release build
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+        GITHUB_TOKEN: ${{secrets.TOKEN}}    
       run: |
         pwd
         ls -la .
-        git config --global --add safe.directory "/__w/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
+        git config --global --add safe.directory "/home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
         export RELEASE=$(($RELEASE_START+$GITHUB_RUN_NUMBER))
         export RELEASE_NAME="4.14.319-KernelSU"
         export RELEASE_TITLE="4.14.319-KernelSU"
