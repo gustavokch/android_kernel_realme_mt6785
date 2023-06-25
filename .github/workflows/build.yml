@@ -30,10 +30,9 @@ jobs:
         defconfig: RM6785_defconfig
         image: Image.gz-dtb
 
-    - name: Release build
+    - name: Install gh cli
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-	
       run: |
         type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
         curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -43,10 +42,14 @@ jobs:
         && sudo apt install gh -y
 	sudo apt install debhelper zip -y
 
-	find / -type f -name "*.zip" > deb
-        export DEB=$(cat deb)
-        zip ../$RELEASE_NAME.zip -@ < deb
-        echo $RELEASE
-        echo $RELEASE_TITLE
-        echo $RELEASE_NAME
-        gh release create --title $(($RELEASE_START+$TAG+$GITHUB_RUN_NUMBER)) --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
+    - name: Release
+       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}	
+       run: |
+	 find / -type f -name "*.zip" > deb
+         export DEB=$(cat deb)
+         zip ../$RELEASE_NAME.zip -@ < deb
+         echo $RELEASE
+         echo $RELEASE_TITLE
+         echo $RELEASE_NAME
+         gh release create --title $(($RELEASE_START+$TAG+$GITHUB_RUN_NUMBER)) --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
