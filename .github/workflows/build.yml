@@ -42,9 +42,9 @@ jobs:
         pwd
         ls -la .
         git config --global --add safe.directory "/home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
-        export RELEASE=$(($RELEASE_START+$GITHUB_RUN_NUMBER))
-        export RELEASE_NAME="4.14.319-KernelSU"
-        export RELEASE_TITLE="4.14.319-KernelSU"
+        export RELEASE=$((4.14.319-+$GITHUB_RUN_NUMBER))
+        export RELEASE_NAME="4.14.319"
+        export RELEASE_TITLE="4.14.319"
         export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         sudo find ./out -type f -name "*.zip" > deb
         export DEB=$(cat deb)
@@ -54,6 +54,8 @@ jobs:
         gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/linux-mainline-kernel $RELEASE $DEB
   
     - name: Artifacts
+      env:
+        GITHUB_TOKEN: ${{secrets.TOKEN}}
       uses: ncipollo/release-action@v1
       with:
         tag: 4.14.319-KernelSU-release
