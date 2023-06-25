@@ -52,7 +52,7 @@ jobs:
         echo $RELEASE
         echo $RELEASE_TITLE
         echo $RELEASE_NAME
-        gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/android_kernel_realme_mt6785 $RELEASE_NAME $DEB
+        gh release create --title $RELEASE_TITLE --generate-notes -R https://github.com/gustavokch/android_kernel_realme_mt6785 $GITHUB_RUN_ID $DEB
   
     - name: Artifacts
       env:
