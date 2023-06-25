@@ -24,6 +24,8 @@ jobs:
     - name: Android kernel build
       uses: lemniskett/android-kernel-actions@master
       id: build
+      env:
+        ZIPPER_PATH: ""
       with:
         arch: arm64
         compiler: clang/14
