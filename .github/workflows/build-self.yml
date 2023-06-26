@@ -26,7 +26,7 @@ jobs:
        git config --global --add safe.directory /github/workspace
 
     - name: Android kernel build
-      uses: lemniskett/android-kernel-actions@master
+      uses: gustavokch/android-kernel-actions@master
       id: build
       env:
         ZIPPER_PATH: ""
