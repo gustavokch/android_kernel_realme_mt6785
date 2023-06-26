@@ -154,7 +154,7 @@ static void rawbulk_auto_reconnect(int transfer_id)
 	struct rawbulk_function *fn = rawbulk_lookup_function(transfer_id);
 
 	C2K_NOTE("%s\n", __func__);
-	if (!fn || fn->autoreconn == 0)
+	if (!fn || fn->autoreconn == false)
 		return;
 
 	if (rawbulk_check_enable(fn) && fn->activated) {
@@ -223,7 +223,7 @@ int rawbulk_function_bind(struct usb_configuration *c, struct
 	}
 
 	fn->cdev = c->cdev;
-	fn->activated = 0;
+	fn->activated = false;
 
 	return rawbulk_bind_function(fn->transfer_id, f, ep_out, ep_in,
 				rawbulk_auto_reconnect);
@@ -342,7 +342,7 @@ static int rawbulk_function_setalt(struct usb_function *f, unsigned int intf,
 	struct rawbulk_function *fn = function_to_rbf(f);
 
 	C2K_NOTE("%s\n", __func__);
-	fn->activated = 1;
+	fn->activated = true;
 	rawbulk_usb_state_set(fn->activated);
 	schedule_work(&fn->activator);
 	return 0;
@@ -354,7 +354,7 @@ static void rawbulk_function_disable(struct usb_function *f)
 
 	C2K_NOTE("%s, %s\n", __func__, f->name);
 
-	fn->activated = 0;
+	fn->activated = true;
 	rawbulk_usb_state_set(fn->activated);
 	schedule_work(&fn->activator);
 }
@@ -387,7 +387,7 @@ int rawbulk_bind_config(struct usb_configuration *c, int transfer_id)
 		fn->function.disable = rawbulk_function_disable;
 
 		INIT_WORK(&fn->activator, do_activate);
-		fn->initialized = 1;
+		fn->initialized = true;
 	}
 
 	rc = usb_add_function(c, &fn->function);
@@ -467,7 +467,7 @@ static struct usb_function *rawbulk_alloc(struct usb_function_instance *fi,
 		fn->function.free_func = rawbulk_free;
 
 		INIT_WORK(&fn->activator, do_activate);
-		fn->initialized = 1;
+		fn->initialized = true;
 	}
 
 	return &fn->function;
