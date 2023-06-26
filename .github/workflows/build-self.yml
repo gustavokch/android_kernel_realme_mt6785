@@ -1,13 +1,15 @@
-name: Build on Tag Github runner
+name: Build on Tag
 
 on:
   push:
+   tags:
+    - '*'
    branches:
     - '*'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions: write-all
     steps:
     - name: Checkout kernel source
@@ -18,6 +20,10 @@ jobs:
       with:
         repository: lemniskett/AnyKernel3
         path: zipper
+        
+    - name: add safe directory
+      run: |
+       git config --global --add safe.directory /github/workspace
 
     - name: Android kernel build
       uses: gustavokch/android-kernel-actions@master
@@ -42,8 +48,8 @@ jobs:
         pwd
         ls -la ./
         git config --global --add safe.directory "/home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
-        export RELEASE_NAME="4.14.319-KernelSU"
-        export RELEASE_TITLE="4.14.319-KernelSU"
+        export RELEASE_NAME="4.14.319-stock"
+        export RELEASE_TITLE="4.14.319-stock"
         export RELEASE=$RELEASE_NAME
         export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         sudo find /home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785 -type f -name "*.zip" > deb
