@@ -44,8 +44,8 @@ jobs:
         pwd
         ls -la ./
         git config --global --add safe.directory "/home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785"        
-        export RELEASE_NAME="4.14.319-KernelSU"
-        export RELEASE_TITLE="4.14.319-KernelSU"
+        export RELEASE_NAME="4.14.319-stock"
+        export RELEASE_TITLE="4.14.319-stock"
         export RELEASE=$RELEASE_NAME
         export DESCRIPTION="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         sudo find /home/runner/work/android_kernel_realme_mt6785/android_kernel_realme_mt6785 -type f -name "*.zip" > deb
