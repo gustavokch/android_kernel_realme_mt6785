@@ -20,6 +20,10 @@ jobs:
       with:
         repository: lemniskett/AnyKernel3
         path: zipper
+        
+    - name: add safe directory
+      run: |
+       git config --global --add safe.directory /github/workspace
 
     - name: Android kernel build
       uses: lemniskett/android-kernel-actions@master
